@@ -13,13 +13,13 @@ type SearchParams = {
   q?: string
 }
 
-export default async function Home({ searchParams  }: { searchParams: SearchParams }) {
+export default async function Home({ searchParams  }: { searchParams: Promise<SearchParams> }) {
   const params = await searchParams;
   const page = parseInt(params.page || "1");
   const pageSize = 6;
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
-  const searchQuery = searchParams.q || '';
+  const searchQuery = params.q || '';
 
   //获取文章总数
   const { count } = await supabase.from("posts").select("*", { count: "exact", head: true });
